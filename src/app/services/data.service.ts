@@ -23,7 +23,7 @@ export class DataService {
 
   constructor() { }
 
-  public getMessages(): Message[] {
+  public getMessages(): Array<any> {
     return this.messages.reverse();
   }
 
@@ -36,7 +36,6 @@ export class DataService {
     const addedMessages: Array<any> = this.messages;
     addedMessages.push(message);
     this.messages = addedMessages;
-    console.log(this.messages)
   }
   public getMessagesLength(): number{
     return this.messages.length;

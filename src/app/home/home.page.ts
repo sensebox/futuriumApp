@@ -19,7 +19,7 @@ export class HomePage implements AfterViewInit {
   public status:boolean = false;
   interval: any;
   measuring: Boolean = false;
-
+  idArray:Array<string> = ['lat','lng','timestamp','accXID','accYID','accZID','magXID','magYID','magZID','rotXID','rotYID','rotZID','distLeftID','distRightID','tempID','pressID','pm25ID','pm10ID'];
 
 
   constructor(
@@ -60,10 +60,79 @@ export class HomePage implements AfterViewInit {
   }
 
   startMeasuring()
-  {
-    this.data.addMessage([1,2,3,4,5])
+  { 
+    // Alle 60 sekunden
+    
+
+      // build csv here
+      /**
+       * 
+       * const char *header = "longitude,latitude,timestamp,sumAccX,sumAccY,sumAccZ,sumMagX,sumMagY,sumMagZ,sumRotX,sumRotY,sumRotZ,distLeft,distRight,temp,press,pm25,pm10";
+                                0         1         2         3
+       * [ [1,2,3,4 ], [5,6,7,8]] => id1,1 
+       *                             id1,5
+       *                             id2,2
+       *                             id2,6
+       * data.map((item)) => item = [1,2,3,4]
+       * make array with indexes according to the measurements 
+       * id;lat;lon;timestamp;value
+       */
+      this.data.addMessage([42222,71111111,20200401121212,3,4,5,5,6,7,7,5,457,6,8,12,643,34,6])
+      this.data.addMessage([422223,7222222,20200401121214,8,9,10,67,5,45,1,3,2,346,456,45,456,456,456])
+
+    
   }
 
+  testFunction(){
+    const data = this.data.getMessages();
+    // holds values
+    let output='';
+    let line;
+    // 10 messages in total
+    for (let indexOuter = 0; indexOuter < data.length; indexOuter++) {
+      const elementOuter = data[indexOuter];
+      for (let indexInner = 0; indexInner < elementOuter.length; indexInner++) {
+        const elementInner = elementOuter[indexInner];
+        if(indexInner<3) continue;
+        line = this.idArray[indexInner] + ',' 
+                  + elementOuter[measurements.longitude] + ','
+                  + elementOuter[measurements.latitude] + ','
+                  + elementOuter[measurements.timestamp] + ','
+                  + elementOuter[indexInner] + '\n'
+        output+= line;
+        line = '';                  
+                }               
+    }
+    console.log("builded",output);
+    this.data.clearMessages();
+  }
+
+  getActualMessages(){
+    const data = this.data.getMessages();
+
+  }
+
+}
+
+enum measurements{
+  longitude,
+  latitude,
+  timestamp,
+  accX,
+  accY,
+  accZ,
+  magX,
+  magY,
+  magZ,
+  rotX,
+  rotY,
+  rotZ,
+  distLeft,
+  distRight,
+  temp,
+  press,
+  pm25,
+  pm10
 }
 
 

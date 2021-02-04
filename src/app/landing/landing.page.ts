@@ -73,11 +73,13 @@ export class LandingPage implements OnInit {
     let messages = request.body.split('\n');
         messages = messages.map((message)=>message.split(','))
         messages = messages.map((array)=>{
-          return array.map(string=>parseInt(string));
+          return array.map((string,index)=>
+                      {
+                          if(index===2)return string;
+                          else return parseInt(string);
+                      });
         })
     messages.map(message=>this.data.addMessage(message));
-    console.log(messages);
-    this.data.addMessage(messages);
     
   }
   async onSlideChange(){
