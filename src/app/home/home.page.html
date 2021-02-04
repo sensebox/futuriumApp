@@ -1,0 +1,51 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Debug App
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        Last transmission: 10 seconds ago
+      </ion-col>
+      <ion-col>
+        Status: <ion-icon *ngIf="status" class='online' name="ellipse"></ion-icon>
+        <ion-icon *ngIf="!status" class='offline' name="ellipse"></ion-icon>
+      </ion-col>
+    </ion-row>
+    <div class="dataDisplay">
+      <ion-item [detail]="false">
+        <ion-label class="ion-text-wrap">
+          <h2>Timestamp</h2>
+        </ion-label>
+        <span>Lon/</span>
+        <span>Lat</span>
+      </ion-item>
+      <div scrolly="true" style="max-height:200;height: 200px;">
+        <ion-list>
+          <app-message *ngFor="let message of getMessages()" [message]="message"></app-message>
+        </ion-list>
+      </div>
+    </div>
+    <ion-row>
+      <ion-col>
+        <ion-button expand="block" *ngIf="!measuring" (click)="startMeasuring()">Start</ion-button>
+        <ion-button expand="block" *ngIf="measuring" color="danger" (click)="stopMeasuring()">Stop</ion-button>
+      </ion-col>
+      <!-- <ion-col>
+       <ion-button color="success" (click)="openAP()">OpenAP</ion-button> 
+    </ion-col> -->
+      <ion-col>
+        <ion-button expand="block" color="warning" (click)="clearMeasurements()">Clear data</ion-button>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+</ion-content>

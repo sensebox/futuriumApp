@@ -1,0 +1,49 @@
+.measurementTable {
+  border-collapse: collapse;
+  width: 96.5%;
+  background-color: var(--white);
+  box-shadow: 0 0 5px ;
+}
+
+.measurementTable td,
+.measurementTable th {
+  text-align: left;
+  color: var(--black);
+  padding: 0.5rem;
+}
+
+.measurementTable tr:nth-child(even) {
+  background-color: #ccc;
+}
+
+.measurementTable th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4caf50;
+  color: var(--black);
+}
+
+div[scrollx="true"],
+div[scrolly="true"] {
+  position: relative;
+  overflow: hidden;
+}
+
+div[scrollx="true"] {
+  overflow-x: auto;
+}
+
+div[scrolly="true"] {
+  overflow-y: auto;
+}
+.dataDisplay{
+  box-shadow: 0 0 10px var(--grayfont);
+}
+
+.offline{
+  color:red;
+}
+.online{
+  color:green
+}

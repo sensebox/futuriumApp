@@ -1,0 +1,27 @@
+<ion-item class="highlight" [routerLink]="'/message/' + message.date" lines="inset" [detail]="false">
+  <ion-label class="ion-text-wrap">
+    <h2>{{message}} 
+      <span class="date">
+        <ion-note></ion-note>
+        <ion-icon name="chevron-forward" size="small" *ngIf="isIos()"></ion-icon>
+      </span>
+    </h2>
+
+  </ion-label>
+</ion-item>
+
+
+<ion-item *ngIf="message.measurements.length == 2" [routerLink]="'/message/' + message.date" lines="inset" [detail]="false">
+  <ion-label class="ion-text-wrap">
+    <h2>{{message.date}}
+      <span class="date">
+        <ion-note></ion-note>
+        <ion-icon name="chevron-forward" size="small" *ngIf="isIos()"></ion-icon>
+      </span>
+    </h2>
+
+  </ion-label>
+  <span>{{message.measurements[0].lon}}/</span>
+  <span>{{message.measurements[0].lat}}</span>
+</ion-item>
+  

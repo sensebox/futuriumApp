@@ -1,0 +1,28 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-back-button [text]="getBackButtonText()" defaultHref="/"></ion-back-button>
+      <ion-title>{{message.date}} </ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" *ngIf="message">
+  <table #measurementTable class="measurementTable">
+    <tr>
+      <th>Titel</th>
+      <th>value</th>
+      <th>timestamp</th>
+      <th>lon</th>
+      <th>lat</th>
+    </tr>
+    <tr *ngFor="let measurement of message.measurements">
+      <td>{{measurement.id.substring(measurement.id.length-3)}}</td>
+      <td>{{measurement.value}}</td>
+      <td>{{measurement.timestamp.substring(measurement.timestamp.length-9,measurement.timestamp.length-1)}}</td>
+      <td>{{measurement.lat}}</td>
+      <td>{{measurement.lon}}</td>
+    </tr>
+  </table>
+</ion-content>
+

@@ -1,0 +1,7 @@
+{
+  "name": "futuriumApp",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

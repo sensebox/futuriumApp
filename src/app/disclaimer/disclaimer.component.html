@@ -1,0 +1,19 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-title>Disclaimer</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      This App will open up a Web Server on your phone and will enable an Access Point for the MCU to connect to. If you agree to this click 'Accept'. Otherwise close this App please. 
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button color="success" expand="block" (click)="dismissPopover()">Accept</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
