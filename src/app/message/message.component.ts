@@ -1,17 +1,13 @@
-// import { ChangeDetectionStrategy } from '@angular/compiler/src/core';
-import { Component, OnInit, Input, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
-import { Message } from '../services/data.service';
-import * as timeago from 'timeago.js';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-message',
   templateUrl: './message.component.html',
   styleUrls: ['./message.component.scss'],
-  //changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MessageComponent implements OnInit {
-  @Input() message: Message;
-
+  @Input() message: Array<any>;
+  @Input() index: number;
   constructor() { }
 
   ngOnInit() {

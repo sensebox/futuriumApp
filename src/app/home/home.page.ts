@@ -59,6 +59,11 @@ export class HomePage implements AfterViewInit {
     return await modal.present();
   }
 
+  startMeasuring()
+  {
+    this.data.addMessage([1,2,3,4,5])
+  }
+
 }
 
 

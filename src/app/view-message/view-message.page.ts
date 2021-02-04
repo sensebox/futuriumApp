@@ -16,8 +16,8 @@ export class ViewMessagePage implements OnInit {
   ) { }
 
   ngOnInit() {
-    const date = this.activatedRoute.snapshot.paramMap.get('timestamp');
-    this.message = this.data.getMessageByDate(date);
+    const index = this.activatedRoute.snapshot.paramMap.get('index');
+    this.message = this.data.getMessages()[index];
     
   }
 

@@ -36,6 +36,7 @@ export class DataService {
     const addedMessages: Array<any> = this.messages;
     addedMessages.push(message);
     this.messages = addedMessages;
+    console.log(this.messages)
   }
   public getMessagesLength(): number{
     return this.messages.length;

@@ -30,7 +30,7 @@
       </ion-item>
       <div scrolly="true" style="max-height:200;height: 200px;">
         <ion-list>
-          <app-message *ngFor="let message of getMessages()" [message]="message"></app-message>
+          <app-message *ngFor="let message of getMessages(); let indexOfElement=index" [message]="message" [index]="indexOfElement"></app-message>
         </ion-list>
       </div>
     </div>
