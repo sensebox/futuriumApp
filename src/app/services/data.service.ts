@@ -31,8 +31,7 @@ export class DataService {
     this.messages[index] = message;
   }
 
-  public addMessage(message:Array<number>): void {
-    console.log("add message");
+  public addMessage(message:Array<any>): void {
     const addedMessages: Array<any> = this.messages;
     addedMessages.push(message);
     this.messages = addedMessages;

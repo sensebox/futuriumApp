@@ -4,6 +4,7 @@ import { ArduinoService } from '../services/arduino.service';
 import { ModalController, Platform, PopoverController, ToastController } from '@ionic/angular';
 import { WebServer } from '@ionic-native/web-server/ngx'
 import { DisclaimerComponent } from '../disclaimer/disclaimer.component';
+import { OsmService } from '../services/osm.service';
 
 @Component({
   selector: 'app-home',
@@ -14,12 +15,12 @@ export class HomePage implements AfterViewInit {
 
   elements: Array<any> = [];
 
-  private abstandLinks:string = '5f9bd0f746592b001b5c6349'
-  private abstandRechts:string = '5f9bd0f746592b001b5c634a'
   public status:boolean = false;
   interval: any;
   measuring: Boolean = false;
-  idArray:Array<string> = ['lat','lng','timestamp','accXID','accYID','accZID','magXID','magYID','magZID','rotXID','rotYID','rotZID','distLeftID','distRightID','tempID','pressID','pm25ID','pm10ID'];
+  idBox:string = '601d2779e443a0001be82ec7';
+  apiKey:string = 'fda3b3124b053b839930ff73fda267de82dc49e94acf4bae68904095fc76d7c9';
+  idArray:Array<string> = ['lat','lng','timestamp','601d2779e443a0001be82ed6','601d2779e443a0001be82ed5','601d2779e443a0001be82ed4','601d2779e443a0001be82ed3','601d2779e443a0001be82ed3','601d2779e443a0001be82ed1','601d2779e443a0001be82ed0','601d2779e443a0001be82ecf','601d2779e443a0001be82ece','601d2779e443a0001be82ecd','601d2779e443a0001be82ecc','601d2779e443a0001be82ecb','601d2779e443a0001be82eca','601d2779e443a0001be82ec8','601d2779e443a0001be82ec9'];
 
 
   constructor(
@@ -30,7 +31,8 @@ export class HomePage implements AfterViewInit {
     private modalController: ModalController,
     private webServer: WebServer,
     private popoverController: PopoverController,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private osmController: OsmService
   ) {
 
       
@@ -61,29 +63,38 @@ export class HomePage implements AfterViewInit {
 
   startMeasuring()
   { 
-    // Alle 60 sekunden
-    
-
-      // build csv here
-      /**
-       * 
-       * const char *header = "longitude,latitude,timestamp,sumAccX,sumAccY,sumAccZ,sumMagX,sumMagY,sumMagZ,sumRotX,sumRotY,sumRotZ,distLeft,distRight,temp,press,pm25,pm10";
-                                0         1         2         3
-       * [ [1,2,3,4 ], [5,6,7,8]] => id1,1 
-       *                             id1,5
-       *                             id2,2
-       *                             id2,6
-       * data.map((item)) => item = [1,2,3,4]
-       * make array with indexes according to the measurements 
-       * id;lat;lon;timestamp;value
-       */
-      this.data.addMessage([42222,71111111,20200401121212,3,4,5,5,6,7,7,5,457,6,8,12,643,34,6])
-      this.data.addMessage([422223,7222222,20200401121214,8,9,10,67,5,45,1,3,2,346,456,45,456,456,456])
-
+    this.measuring = true;
+    const that = this;
+    this.interval = setInterval(function(){
+      {
+        console.log("Data in store: ",that.data.getMessages());
+        const csv = that.buildCSV();
+        const token = '';
+        that.osmController.postMultipleMeasurements(token,that.idBox,csv).subscribe(response=>console.log(response))
+        
+      }
+    },10000)
     
   }
 
   testFunction(){
+    this.data.addMessage([51.9542458,7.6324707,'2021-02-05T13:32:19Z',4,5,6,7,8,9,10,11,12,13,14,15,16,17])
+    const test = this.buildCSV();
+    this.osmController.postMultipleMeasurements('','601d2779e443a0001be82ec7',test).subscribe(response=>console.log(response))
+    this.osmController.getBox('601d2779e443a0001be82ec7').subscribe(response=>console.log(response))
+  }
+  stopMeasuring(){
+    this.measuring = false;
+    clearInterval(this.interval);
+  } 
+
+
+  getActualMessages(){
+    const data = this.data.getMessages();
+
+  }
+
+  buildCSV(){
     const data = this.data.getMessages();
     // holds values
     let output='';
@@ -95,28 +106,23 @@ export class HomePage implements AfterViewInit {
         const elementInner = elementOuter[indexInner];
         if(indexInner<3) continue;
         line = this.idArray[indexInner] + ',' 
-                  + elementOuter[measurements.longitude] + ','
-                  + elementOuter[measurements.latitude] + ','
+                  + elementOuter[indexInner]+ ',' 
                   + elementOuter[measurements.timestamp] + ','
-                  + elementOuter[indexInner] + '\n'
+                  + elementOuter[measurements.longitude] + ','
+                  + elementOuter[measurements.latitude] + '\n';
         output+= line;
         line = '';                  
                 }               
     }
-    console.log("builded",output);
     this.data.clearMessages();
-  }
-
-  getActualMessages(){
-    const data = this.data.getMessages();
-
+    return output;
   }
 
 }
 
 enum measurements{
-  longitude,
   latitude,
+  longitude,
   timestamp,
   accX,
   accY,

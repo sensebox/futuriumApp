@@ -34,7 +34,6 @@ export class LandingPage implements OnInit {
     // send response
     let response;
     this.webServer.onRequest().subscribe(request=>{
-      console.log("inc",request);
       if(request.path === '/activation'){
         this.connected = true;
         this.slides.lockSwipeToNext(false);
@@ -65,8 +64,6 @@ export class LandingPage implements OnInit {
   }
 
   async handleIncRequest(request){
-    console.log("Inc",request)
-    console.log("Supposed Body of request", request.body)
     // handle message
     // split by \n and ','
     // cast to numbers instead of strings
@@ -75,11 +72,14 @@ export class LandingPage implements OnInit {
         messages = messages.map((array)=>{
           return array.map((string,index)=>
                       {
-                          if(index===2)return string;
+                          if(index===measurements.timestamp)return string;
+                          if(index === measurements.latitude || index === measurements.longitude)return parseInt(string)/10000000;
+                          if(index===measurements.pm10 || index === measurements.pm25 || index === measurements.temp || index === measurements.press) return parseInt(string)/100;
                           else return parseInt(string);
                       });
         })
     messages.map(message=>this.data.addMessage(message));
+    console.log("Req handling done");
     
   }
   async onSlideChange(){
@@ -149,4 +149,26 @@ export class LandingPage implements OnInit {
     this.router.navigateByUrl(`/home`)
   }
 
+}
+
+
+enum measurements{
+  longitude,
+  latitude,
+  timestamp,
+  accX,
+  accY,
+  accZ,
+  magX,
+  magY,
+  magZ,
+  rotX,
+  rotY,
+  rotZ,
+  distLeft,
+  distRight,
+  temp,
+  press,
+  pm25,
+  pm10
 }

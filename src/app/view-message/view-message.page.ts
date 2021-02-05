@@ -17,7 +17,7 @@ export class ViewMessagePage implements OnInit {
 
   ngOnInit() {
     const index = this.activatedRoute.snapshot.paramMap.get('index');
-    this.message = this.data.getMessages()[index];
+    //this.message = this.data.getMessages()[index];
     
   }
 
