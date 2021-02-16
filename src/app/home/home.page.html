@@ -1,51 +1,65 @@
-<ion-header [translucent]="true">
+<ion-header >
   <ion-toolbar>
-    <ion-title>
-      Debug App
-    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button style="--color:white" (click)="presentSettings($event)">
+        <ion-icon name="settings-sharp"></ion-icon>      </ion-button>    
+    </ion-buttons>
+    <ion-title>Futurium 2021</ion-title>  
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+  <!-- <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
     <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        Last transmission: 10 seconds ago
-      </ion-col>
-      <ion-col>
-        Status: <ion-icon *ngIf="status" class='online' name="ellipse"></ion-icon>
-        <ion-icon *ngIf="!status" class='offline' name="ellipse"></ion-icon>
-      </ion-col>
-    </ion-row>
-    <div class="dataDisplay">
-      <ion-item [detail]="false">
-        <ion-label class="ion-text-wrap">
-          <h2>Timestamp</h2>
-        </ion-label>
-        <span>Lon/</span>
-        <span>Lat</span>
-      </ion-item>
-      <div scrolly="true" style="max-height:200;height: 200px;">
-        <ion-list>
-          <app-message *ngFor="let message of getMessages(); let indexOfElement=index" [message]="message" [index]="indexOfElement"></app-message>
-        </ion-list>
-      </div>
-    </div>
-    <ion-row>
-      <ion-col>
-        <ion-button expand="block" *ngIf="!measuring" (click)="startMeasuring()">Start</ion-button>
-        <ion-button expand="block" *ngIf="measuring" color="danger" (click)="stopMeasuring()">Stop</ion-button>
-      </ion-col>
-      <!-- <ion-col>
-       <ion-button color="success" (click)="openAP()">OpenAP</ion-button> 
-    </ion-col> -->
-      <ion-col>
-        <ion-button expand="block" color="warning" (click)="testFunction()">TEST BUTTON</ion-button>
-      </ion-col>
-    </ion-row>
+  </ion-refresher> -->
+  <div class="wrapper">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <div class="ion-text-center">
+            Verbunden mit der senseBox; Übertrage Daten an die openSenseMap
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <div class="ion-text-center">
+            <ion-icon style='font-size: 185px;'name="globe"></ion-icon>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <div class="ion-text-center">
+            <span style="font-size:100px;color:lightgray">{{loadingString}}</span>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <div class="ion-text-center">
+            Letzte Messung um:
+            <span *ngIf="lastTimestamp" [routerLink]="'/message/' + 0" style="color:blue">{{lastTimestamp}}</span>
+            <span *ngIf="!lastTimestamp">Messung läuft...</span>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <div class="ion-text-center">
+            Letzte Übertragung zur openSenseMap:
+            <span *ngIf="lastOSMTimestamp" style="color:green">{{lastOSMTimestamp}}</span>
+            <span *ngIf="!lastOSMTimestamp">Noch keine Übertragung zur openSenseMap</span>
+          </div>
+        </ion-col>
+      </ion-row>
+      <!-- <ion-row>
+        <div class="ion-text-center">
+          <ion-button (click)="testFunction()">upload to osm</ion-button>
+          <ion-button (click)="addMessage()">add message</ion-button>
+        </div>
+      </ion-row> -->
+    </ion-grid>
+  </div>
 
-  </ion-grid>
 </ion-content>

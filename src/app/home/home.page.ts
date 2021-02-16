@@ -1,11 +1,8 @@
-import { AfterViewInit,ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { DataService, Measurement, Message } from '../services/data.service';
-import { ArduinoService } from '../services/arduino.service';
-import { ModalController, Platform, PopoverController, ToastController } from '@ionic/angular';
-import { WebServer } from '@ionic-native/web-server/ngx'
+import { AfterViewInit,ChangeDetectorRef, Component } from '@angular/core';
+import { DataService, Message } from '../services/data.service';
+import { ModalController, PopoverController, ToastController } from '@ionic/angular';
 import { DisclaimerComponent } from '../disclaimer/disclaimer.component';
-import { OsmService } from '../services/osm.service';
-
+import {SettingsComponent} from '../settings/settings.component';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -21,25 +18,25 @@ export class HomePage implements AfterViewInit {
   idBox:string = '601d2779e443a0001be82ec7';
   apiKey:string = 'fda3b3124b053b839930ff73fda267de82dc49e94acf4bae68904095fc76d7c9';
   idArray:Array<string> = ['lat','lng','timestamp','601d2779e443a0001be82ed6','601d2779e443a0001be82ed5','601d2779e443a0001be82ed4','601d2779e443a0001be82ed3','601d2779e443a0001be82ed3','601d2779e443a0001be82ed1','601d2779e443a0001be82ed0','601d2779e443a0001be82ecf','601d2779e443a0001be82ece','601d2779e443a0001be82ecd','601d2779e443a0001be82ecc','601d2779e443a0001be82ecb','601d2779e443a0001be82eca','601d2779e443a0001be82ec8','601d2779e443a0001be82ec9'];
-
+  loadingString:string = '.';
+  messages:any; 
+  lastTimestamp:string;
+  lastOSMTimestamp:string;
 
   constructor(
-    platform: Platform,
     private data: DataService,
-    private arduino: ArduinoService,
     public toastController: ToastController,
     private modalController: ModalController,
-    private webServer: WebServer,
     private popoverController: PopoverController,
     private changeDetectorRef: ChangeDetectorRef,
-    private osmController: OsmService
   ) {
 
       
   }
+  ngAfterViewInit(){
+    this.startLoading();
 
-  ngAfterViewInit() {
-  };
+  }
 
   refresh(ev) {
     setTimeout(() => {
@@ -51,71 +48,40 @@ export class HomePage implements AfterViewInit {
     return this.data.getMessages();
   }
 
+  async presentSettings(ev: any) {
+    const popover = await this.popoverController.create({
+      component: SettingsComponent,
+      event: ev,
+      translucent: true
+    })
+
+    return await popover.present();
+  }
+
   async presentModal() {
     const modal = await this.modalController.create({
       component: DisclaimerComponent,
       cssClass: 'my-custom-class'
     });
 
-
     return await modal.present();
   }
 
-  startMeasuring()
-  { 
-    this.measuring = true;
+  startLoading(){
     const that = this;
-    this.interval = setInterval(function(){
-      {
-        console.log("Data in store: ",that.data.getMessages());
-        const csv = that.buildCSV();
-        const token = '';
-        that.osmController.postMultipleMeasurements(token,that.idBox,csv).subscribe(response=>console.log(response))
-        
-      }
-    },10000)
-    
-  }
-
-  testFunction(){
-    this.data.addMessage([51.9542458,7.6324707,'2021-02-05T13:32:19Z',4,5,6,7,8,9,10,11,12,13,14,15,16,17])
-    const test = this.buildCSV();
-    this.osmController.postMultipleMeasurements('','601d2779e443a0001be82ec7',test).subscribe(response=>console.log(response))
-    this.osmController.getBox('601d2779e443a0001be82ec7').subscribe(response=>console.log(response))
-  }
-  stopMeasuring(){
-    this.measuring = false;
-    clearInterval(this.interval);
-  } 
-
-
-  getActualMessages(){
-    const data = this.data.getMessages();
-
-  }
-
-  buildCSV(){
-    const data = this.data.getMessages();
-    // holds values
-    let output='';
-    let line;
-    // 10 messages in total
-    for (let indexOuter = 0; indexOuter < data.length; indexOuter++) {
-      const elementOuter = data[indexOuter];
-      for (let indexInner = 0; indexInner < elementOuter.length; indexInner++) {
-        const elementInner = elementOuter[indexInner];
-        if(indexInner<3) continue;
-        line = this.idArray[indexInner] + ',' 
-                  + elementOuter[indexInner]+ ',' 
-                  + elementOuter[measurements.timestamp] + ','
-                  + elementOuter[measurements.longitude] + ','
-                  + elementOuter[measurements.latitude] + '\n';
-        output+= line;
-        line = '';                  
-                }               
-    }
-    this.data.clearMessages();
-    return output;
+    let interval = setInterval(function(){
+        if(that.loadingString === '...')
+        {
+          that.loadingString = '.';
+        }
+        else 
+        { 
+          that.loadingString += '.';
+        }
+        that.lastTimestamp = that.data.getTimestamp();
+        that.lastOSMTimestamp = that.data.getOSMTimestamp();
+        that.changeDetectorRef.detectChanges();
+    },500)
   }
 
 }

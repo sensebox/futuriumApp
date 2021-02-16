@@ -8,8 +8,8 @@
     </h2>
   </ion-label>
 </ion-item> -->
-<ion-item [routerLink]="'/message/' + message[index]" lines="inset" [detail]="false">
-  <ion-label class="ion-text-wrap">
+<ion-item class="ion-text-center" [routerLink]="'/message/' + index" lines="none" [detail]="false">
+  <!-- <ion-label class="ion-text-wrap">
     <h2>{{message[2]}}
       <span class="date">
         <ion-note></ion-note>
@@ -19,6 +19,7 @@
 
   </ion-label>
   <span>{{message[0]}}/</span>
-  <span>{{message[1]}}</span>
+  <span>{{message[1]}}</span> -->
+  <ion-label style="color:blue;" class="ion-text-wrap">{{message[2]}}</ion-label>
 </ion-item>
   
