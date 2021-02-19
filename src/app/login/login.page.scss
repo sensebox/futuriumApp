@@ -1,0 +1,65 @@
+ion-content {
+    --background:var(--darkgray);
+    text-align:center;
+    display:table;
+}
+.login_wrapper {
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+ 
+}
+
+.plus{
+    justify-content: center;
+    font-size:80px;
+    margin-top:20px;
+}
+
+.login_input {
+    --background:var(--white);
+    margin:10px;
+    border-radius: 25px;
+    color:black
+    
+}
+
+
+.login_button {
+    width:100%;
+    margin:5px;
+    --background: var(--primary);
+    --border-radius:25px ;
+    --color:var(--white);
+    text-shadow: 0 0 2px white
+}
+
+.register_button {
+    width:100%;
+    margin:5px;
+    --background:  var(--yellow);
+    --border-radius:25px ;
+    --color: var(--black);
+    text-shadow: 0 0 2px white
+
+}
+
+.keepSignedIn{
+
+    display:inline-block;
+    
+}
+
+.keepSignedInItem{
+    --background:None;
+    --color:var(--white)
+
+}
+.keepSignedInCheckbox{
+    --background:var(--white);
+    --background-checked:var(--primary);
+    margin:0.5rem;
+    --size:1.75rem
+}

@@ -28,6 +28,7 @@
     "@ionic-native/web-server": "^5.29.0",
     "@ionic-native/web-socket-server": "^5.29.0",
     "@ionic/angular": "^5.0.0",
+    "@ionic/storage": "^2.3.1",
     "chart.js": "^2.9.4",
     "cordova-android": "^8.1.0",
     "cordova-open-native-settings": "^1.5.3",

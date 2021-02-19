@@ -5,6 +5,7 @@ import { WebServer } from '@ionic-native/web-server/ngx'
 import { OpenNativeSettings } from '@ionic-native/open-native-settings/ngx';
 import { DataService } from '../services/data.service';
 import { OsmService } from '../services/osm.service';
+import { Storage } from '@ionic/storage';
 
 declare let window: any;
 @Component({
@@ -18,11 +19,29 @@ export class LandingPage implements OnInit {
     initialSlide: 0,
     speed: 400
   };
+  boxId:string;
+  access_token:string;
   loadingString: string = '.';
   connected: boolean = false;
-  idBox:string = '601d2779e443a0001be82ec7';
-  apiKey:string = 'fda3b3124b053b839930ff73fda267de82dc49e94acf4bae68904095fc76d7c9';
-  idArray:Array<string> = ['lat','lng','timestamp','601d2779e443a0001be82ed6','601d2779e443a0001be82ed5','601d2779e443a0001be82ed4','601d2779e443a0001be82ed3','601d2779e443a0001be82ed3','601d2779e443a0001be82ed1','601d2779e443a0001be82ed0','601d2779e443a0001be82ecf','601d2779e443a0001be82ece','601d2779e443a0001be82ecd','601d2779e443a0001be82ecc','601d2779e443a0001be82ecb','601d2779e443a0001be82eca','601d2779e443a0001be82ec8','601d2779e443a0001be82ec9'];
+  idArray:Array<string> = ['lat','lng','timestamp'];
+  sensorName:Array<string> =
+  [
+    "accZ",
+    "accX",
+    "accY",
+    "magZ",
+    "magX",
+    "magY",
+    "rotZ",
+    "rotX",
+    "rotY",
+    "distRight",
+    "distLeft",
+    "temp",
+    "humi",
+    "pm10",
+    "pm25"
+  ]
 
   constructor(
     private router: Router,
@@ -30,11 +49,23 @@ export class LandingPage implements OnInit {
     private data: DataService,
     private openNativeSettings: OpenNativeSettings,
     private osmController: OsmService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private storage: Storage
   ) {
   }
 
   ngOnInit() {
+    this.sensorName.map((sensor,index)=>{
+      this.storage.get(sensor).then((val)=>{
+        this.idArray.push(val);
+      });
+    })
+    this.storage.get('boxid').then(boxid=>{
+      this.boxId = boxid
+    })
+    this.storage.get('access_token').then(access_token=>{
+      this.access_token = access_token;
+    })
   }
 
   initWebServer() {
@@ -60,8 +91,7 @@ export class LandingPage implements OnInit {
           console.log("sending to osm");
           this.data.setOSMTimestamp(data[0][2]);
           const csv = this.buildCSV();
-          const token = '';
-          this.osmController.postMultipleMeasurements(token, this.idBox, csv).subscribe(response => console.log(response))
+          this.osmController.postMultipleMeasurements(this.access_token,this.boxId, csv).subscribe(response => console.log(response))
         }
         response = {
           status: 200,
@@ -101,9 +131,6 @@ export class LandingPage implements OnInit {
     return output;
   }
   async handleIncRequest(request) {
-    // handle message
-    // split by \n and ','
-    // cast to numbers instead of strings
     try {
       let messages = request.body.split('\n');
       messages = messages.map((message) => message.split(','))
@@ -183,7 +210,6 @@ export class LandingPage implements OnInit {
     this.slides.slidePrev();
   }
   goHome() {
-    //this.slide
     this.router.navigateByUrl(`/home`)
   }
 

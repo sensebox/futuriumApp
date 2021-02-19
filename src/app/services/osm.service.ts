@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { timeout } from 'rxjs/operators'
 
 
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -10,7 +12,11 @@ export class OsmService {
 
   private URL_user = 'https://api.opensensemap.org/users/me/boxes';
   private URL_sketch = 'https://api.opensensemap.org/boxes/';
-
+  private URL_login = 'https://api.opensensemap.org/users/sign-in'
+  private URL_register = 'https://api.opensensemap.org/users/register'
+  private URL_newbox = 'https://api.opensensemap.org/boxes'
+  private URL_logout = 'https://api.opensensemap.org/users/sign-out '
+  
   constructor(
     private http: HttpClient
   ) { }
@@ -76,6 +82,23 @@ export class OsmService {
     return this.http.post(url,csv,{headers})
               .pipe(timeout(30000));
   }
+
+  submitLogin(username:string,password:string){
+    const headers = new HttpHeaders({'Content-Type': 'application/json'} );
+    return this.http.post(`${this.URL_login}?email=${username}&password=${password}`,{headers})
+            .pipe(timeout(30000))
+  }
+
+  logout(token:string){
+
+    const headers = new HttpHeaders({'Content-Type':'application/json','Authorization':'Bearer '+token})
+
+    
+    return this.http.post(this.URL_logout,{headers})
+      .pipe(timeout(30000))
+  }
+
+
 
 
 }

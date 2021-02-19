@@ -1,9 +1,28 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>login</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content padding class="login_background">
+  <ion-grid class="login_wrapper">
+    <form #form="ngForm" (ngSubmit)="submitLogin(form)">
+      <ion-row><img src="assets/futuriumlogo.png"></ion-row>
+      <ion-row style="display:grid;"><span class="plus">+</span></ion-row>
+      <ion-row><img src="assets/sensebox_logo_neu.png"></ion-row>
 
-<ion-content>
+      <ion-row>
+        <ion-input class="login_input" placeholder="email" name="email" type="email" ngModel required></ion-input>
+      </ion-row>
+      <ion-row>
+        <ion-input class="login_input" name="password" type="password" placeholder="Password" ngModel required>
+        </ion-input>
+      </ion-row>
+      <ion-row>
+        <ion-button class="login_button " type="submit"><div class="shadow">Login</div></ion-button>
+      </ion-row>
 
+        <div class="keepSignedIn">
+        <ion-item class="keepSignedInItem" lines="none">
+          <ion-label class="keepSignedInLabel">Speicher Login Daten</ion-label>
+          <ion-checkbox class="keepSignedInCheckbox" name="signedIn" [(ngModel)]="keepSignedIn"></ion-checkbox>
+      </ion-item>
+    </div>
+
+    </form>
+  </ion-grid>
 </ion-content>

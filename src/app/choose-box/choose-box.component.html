@@ -1,0 +1,18 @@
+<ion-header >
+  <ion-toolbar>
+    <ion-title>Wähle deine senseBox</ion-title>  
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-grid>
+    <ion-list>
+      <ion-item *ngFor="let box of data.data.boxes" >
+        <ion-button (click)="chooseBox(box)" color="success" slot="end">
+          Diese Box auswählen
+        </ion-button>
+        <ion-label>{{box.name}}</ion-label>
+        <ion-badge *ngIf="box.grouptag">{{box.grouptag}} </ion-badge>
+      </ion-item>
+    </ion-list>
+  </ion-grid>
+</ion-content>

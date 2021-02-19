@@ -14,10 +14,13 @@ import { HttpClientModule } from  '@angular/common/http';
 import { WebServer } from '@ionic-native/web-server/ngx';
 import { OpenNativeSettings } from '@ionic-native/open-native-settings/ngx';
  
+import { IonicStorageModule } from '@ionic/storage';
+import { ChooseBoxComponent } from './choose-box/choose-box.component';
+
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,HttpClientModule],
+  declarations: [AppComponent,ChooseBoxComponent],
+  entryComponents: [ChooseBoxComponent],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,HttpClientModule,IonicStorageModule.forRoot()],
   providers: [
     StatusBar,
     SplashScreen,
